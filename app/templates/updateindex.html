@@ -1,0 +1,40 @@
+{% autoescape off %}
+<!doctype html>
+<html>
+  <head>
+    <title>Report</title>
+  </head>
+  <body>
+    <h1>Vulnerability DB</h1>
+    <a href="/" >back</a>
+
+      <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Vulnerability</th>
+            <th scope="col">Remediation</th>
+            
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vuln in vulns %}
+                <tr>
+                    <td>{{ vuln.id }}</th>
+                    <td>{{ vuln.vulnerability }}</td>
+                    <td>{{ vuln.remediation }}</td>
+                    
+                    <td><a href='update/{{ vuln.id }}'>Edit</a></td>
+                    <td><a href='delete/{{ vuln.id }}'>Delete</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+
+
+  </body>
+</html>
+{% endautoescape %}

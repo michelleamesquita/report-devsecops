@@ -1,0 +1,23 @@
+{% autoescape off %}
+<!doctype html>
+<html>
+  <head>
+    <title>Vulnerability</title>
+  </head>
+
+    <div>
+    <a href="/">back</a>
+    </div>
+    
+    Choose a Vulnerability
+    <SELECT name="vuln">
+      {% for c in vulnList %}
+          <OPTION value={{c.id}}>{{c.vulnerability}}</option>
+      {% endfor %}
+      </SELECT>
+
+
+
+  </body>
+</html>
+{% endautoescape %}
