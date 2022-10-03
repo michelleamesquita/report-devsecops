@@ -1,5 +1,7 @@
 
-from flask import Flask, request, redirect, url_for,render_template
+from crypt import methods
+from flask import Flask, request, redirect, url_for,render_template,jsonify
+import json
 from flask_mysqldb import MySQL
 import mysql.connector
 import os
@@ -25,7 +27,7 @@ config = {
         'database': 'sec'
         }
 
-@app.route('/report')
+@app.route('/report',methods=['GET','POST'])
 def report():
 
 
@@ -34,6 +36,7 @@ def report():
 
     mycursor = mydb.cursor()
 
+    
 
     if request.method == 'GET':
         mycursor.execute("SELECT * FROM report")
@@ -41,7 +44,80 @@ def report():
         for row in mycursor.fetchall():
             cr.append({"id": row[0], "vulnerability": row[1], "remediation": row[2]})
         
-        return render_template("report.html", vulnList = cr)
+        
+        return render_template("report.html", vulnList = cr , vulnItem="---")
+
+
+
+
+@app.route('/update_dropdown/<int:id>',methods=['GET'])
+def get_update_dropdown(id):
+
+    
+
+    if request.method == 'GET':
+    
+
+        id = str(id)
+
+
+        mydb = mysql.connector.connect(**config)
+
+        mycursor = mydb.cursor()
+
+
+        if request.method == 'GET':
+            mycursor.execute("SELECT * FROM report WHERE id = %s", (id,))
+
+            for row in mycursor.fetchall():
+                    cr= row[2]
+
+        
+            vuln= jsonify({ "id": str(cr) })
+
+            return vuln
+
+
+
+
+
+@app.route('/update_dropdown/',methods=['POST'])
+def update_dropdown():
+
+
+
+    selected_class = request.form.get('comp_select')
+    selected_class = str(selected_class)
+
+
+
+    if request.method == 'POST':
+    
+        # selected_class = request.form.get('comp_select')
+        selected_class = str(selected_class)
+
+        cr = []
+    
+
+        mydb = mysql.connector.connect(**config)
+
+        mycursor = mydb.cursor()
+
+        
+
+        if request.method == 'POST':
+            mycursor.execute("SELECT * FROM report WHERE id = %s", (selected_class,))
+
+            for row in mycursor.fetchall():
+                    cr.append(row[2])
+
+
+            vuln= jsonify({ "vuln": (cr) , "id": (selected_class) })
+
+            return vuln
+            
+
+   
 
 
 def parseCSV(filePath):
