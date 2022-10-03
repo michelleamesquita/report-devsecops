@@ -1,4 +1,3 @@
-{% autoescape off %}
 <!doctype html>
 <html>
   <head>
@@ -9,15 +8,92 @@
     <a href="/">back</a>
     </div>
     
-    Choose a Vulnerability
-    <SELECT name="vuln">
-      {% for c in vulnList %}
-          <OPTION value={{c.id}}>{{c.vulnerability}}</option>
-      {% endfor %}
-      </SELECT>
+    <form class="form-inline" method="POST" action="/update_dropdown/">
+    <div class="form-group">
+      <div class="input-group">
+          <span class="input-group-addon">Please select</span>
+          Choose a Vulnerability
+              <select name="comp_select" class="selectpicker form-control" id="all_classes">
+                {% for c in vulnList %}
+                <option value="{{ c.name }}">{{ c.vulnerability }}</option>
+                {% endfor %}
+              </select>
+
+              <input type="text" id="all_entries" name="fname"  class="result" value={{vulnItem}}><br><br>
+
+        </div>
+        <!-- <button type="submit" class="btn btn-default">Go</button> -->
+      </div>
+
+      <script type="text/javascript">
+
+        vuln_select = document.getElementById('all_classes')
+        rem_select = document.getElementById('all_entries')
+        
 
 
+        vuln_select.onchange = function vuln_post(){
+
+          
+          fetch('/update_dropdown/', {method:'POST'})
+          .then(
+            
+            (response) => response.json()
+         
+          ).then(async function(data){
+
+
+            const result = document.querySelector('.result');
+            result.value = data['vuln']
+            console.log(data)
+
+            const id_data = data['id']
+
+            console.log(id_data)
+
+            let id_data_str = id_data.toString()
+
+            console.log(id_data_str)
+            // console.log(typeof(id_data_str))
+
+            if (id_data_str == 'None'){
+               id_data_str = '1'
+            }else{ id_data_str = id_data_str}
+            
+         
+
+            if (typeof(id_data_str) === "string" ) {
+
+      
+
+            fetch(`/update_dropdown/${id_data_str}`, {method:'GET'})
+          .then(
+            
+            (response) => response.json()
+         
+          ).then(async function(data){
+
+            
+            const result = document.querySelector('.result');
+            result.value = data['id']
+            console.log(data)
+            console.log(data['id'])
+
+          
+
+          })
+
+
+            }
+
+            
+          })
+
+         
+        }
+
+      </script>
+    </form>
 
   </body>
 </html>
-{% endautoescape %}
