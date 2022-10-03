@@ -27,7 +27,7 @@ config = {
         'database': 'sec'
         }
 
-@app.route('/report',methods=['GET','POST'])
+@app.route('/report',methods=['GET'])
 def report():
 
 
@@ -36,16 +36,14 @@ def report():
 
     mycursor = mydb.cursor()
 
-    
+   
+    mycursor.execute("SELECT * FROM report")
 
-    if request.method == 'GET':
-        mycursor.execute("SELECT * FROM report")
-
-        for row in mycursor.fetchall():
+    for row in mycursor.fetchall():
             cr.append({"id": row[0], "vulnerability": row[1], "remediation": row[2]})
         
         
-        return render_template("report.html", vulnList = cr , vulnItem="---")
+    return render_template("report.html", vulnList = cr , vulnItem="---")
 
 
 
@@ -81,40 +79,14 @@ def get_update_dropdown(id):
 
 
 
-@app.route('/update_dropdown/',methods=['POST'])
+@app.route('/update_dropdown/',methods=['POST','GET'])
 def update_dropdown():
 
 
-
-    selected_class = request.form.get('comp_select')
-    selected_class = str(selected_class)
-
+        select = request.args.get('comp_select')
+        return jsonify({ "vuln": str(select) })
 
 
-    if request.method == 'POST':
-    
-        # selected_class = request.form.get('comp_select')
-        selected_class = str(selected_class)
-
-        cr = []
-    
-
-        mydb = mysql.connector.connect(**config)
-
-        mycursor = mydb.cursor()
-
-        
-
-        if request.method == 'POST':
-            mycursor.execute("SELECT * FROM report WHERE id = %s", (selected_class,))
-
-            for row in mycursor.fetchall():
-                    cr.append(row[2])
-
-
-            vuln= jsonify({ "vuln": (cr) , "id": (selected_class) })
-
-            return vuln
             
 
    
