@@ -6,17 +6,22 @@
   </head>
   <body>
     <h1>Report Generate 👾</h1>
-    <form method="POST" action="" enctype="multipart/form-data">
+    <form method="POST" action="/upload" enctype="multipart/form-data">
       <label for="price">Upload csv to send all vulns</label>
       <p><input type="file" name="file"></p>
       <p><input type="submit" value="Submit"></p>
+    </form>
 
+    <form method="POST" action="" enctype="multipart/form-data">
       <div class="form-group row">
         <label for="vulnerability">Vulnerability</label>
         <input type="text" class="form-control" name="vulnerability" id="vulnerability">
+
+        <label for="vulnerability">Detail</label>
+        <input type="text" class="form-control" name="detail" id="detail">
       
-          <label for="price">Remediation</label>
-          <input type="text" class="form-control" name="remediation" id="remediation">
+        <label for="price">Remediation</label>
+        <input type="text" class="form-control" name="remediation" id="remediation">
       </div>
       <button type="btnAdd" class="btn btn-primary">Submit</button>
       <a href="/" class="btn btn-primary">Cancel</a>

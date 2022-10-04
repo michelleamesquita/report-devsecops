@@ -1,0 +1,23 @@
+{% autoescape off %}
+<!doctype html>
+<html>
+  <head>
+    <title>Report</title>
+  </head>
+  <body>
+    <h1>Upload Photo</h1>
+    <a href="/report" >back</a>
+
+    <form method="POST" action="/upload_photo" enctype="multipart/form-data">
+      <p><input type="file" name="file"></p>
+      <p><input type="submit" value="Submit"></p>
+    </form>
+    <hr>
+   
+    </hr>
+
+
+
+  </body>
+</html>
+{% endautoescape %}

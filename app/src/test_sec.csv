@@ -1,2 +1,2 @@
-﻿vulnerability;remediation
-sql injection;parametrizaçao de query
+vulnerability;detail;remediation
+sql injection teste;executa sql;parametrizaçao de query

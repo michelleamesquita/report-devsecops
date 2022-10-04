@@ -13,6 +13,7 @@
             <tr>
             <th scope="col">Id</th>
             <th scope="col">Vulnerability</th>
+            <th scope="col">Detail</th>
             <th scope="col">Remediation</th>
             
             <th scope="col">Edit</th>
@@ -24,6 +25,7 @@
                 <tr>
                     <td>{{ vuln.id }}</th>
                     <td>{{ vuln.vulnerability }}</td>
+                    <td>{{ vuln.detail }}</td>
                     <td>{{ vuln.remediation }}</td>
                     
                     <td><a href='update/{{ vuln.id }}'>Edit</a></td>

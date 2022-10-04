@@ -3,36 +3,63 @@
   <head>
     <title>Vulnerability</title>
   </head>
-
+  <h1>Report! 🦊 </h1>
     <div>
-    <a href="/">back</a>
+    <a href="/">back</a> <br><br>
     </div>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+
+    <form class="form-inline" method="POST" action="/update_dropdown/" id="firstname1" >
+      <label for="vulnerability">App Name</label>
+      <input type="text" class="form-control" name="name" id="name">
+      <label for="date">Date</label>
+      <input type="text" class="form-control" name="date" id="date">
+      <br><br>
+
     
-    <form class="form-inline" method="GET" action="/update_dropdown/">
-    <div class="form-group">
-      <div class="input-group">
-          <span class="input-group-addon">Please select</span>
-          Choose a Vulnerability
+    <!-- <form class="form-inline" method="POST" action="/update_dropdown/" id="firstname1" > -->
+      <div class="input-group" id="group-id">
+        <div id="employee_tbl">
+         
+              <span class="input-group-addon"> Choose a Vulnerability:</span>
+         
               <select name="comp_select" class="selectpicker form-control"  id="all_classes">
               {% for c in vulnList %}
               <option value="{{ c.id }}">{{ c.vulnerability }}</option>
               {% endfor %}
             </select>
-             <input type="text" id="all_entries" name="fname"  class="result" value="{{vulnItem}}"><br><br>
+            
+             <input type="text" id="all_entries" name="fname_detail"  class="result" value="{{vulnItem}}">
+             <input type="text" id="all_entries2" name="fname_remediation"  class="result2" value="{{vulnItem}}">
+             <button type = "button" onClick="window.location='/upload_photo'">Upload</button>
+             <i class="fas fa-plus-circle add_button"></i>
 
-        </div>
-        
+             <br><br>
+
+             
+              </div>
+          <button type = "button" onClick="window.location='/get_csv'">Download! </button>
       </div>
+      <!-- <input type="submit" value="Generate"> 
+       -->
+    </form>
+    
+     
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
       <script type="text/javascript">
-
-        vuln_select = document.getElementById('all_classes')
+        
+        var tam= document.querySelectorAll('[id^="all_classes"]').length
+        tam = tam-1
+        
        
-    
+        vuln_select = document.querySelectorAll('[id^="all_classes"]')[tam]
+       
+       
 
         vuln_select.onchange = function (){
 
-            console.log(vuln_select.value)
+            
 
             fetch(`/update_dropdown/${vuln_select.value}`)
           .then(
@@ -41,22 +68,136 @@
          
           ).then(async function(data){
 
-            
-            const result = document.querySelector('.result');
+            const result = document.querySelectorAll('.result')[tam];
+            // const result = document.querySelector('.result');
           
-            result.value = data['id']
+            result.value = data['detail']
+
+            const result2 = document.querySelectorAll('.result2')[tam];
+            // const result2 = document.querySelector('.result2');
+          
+            result2.value = data['id']
             // console.log(vuln_select.value)
             // console.log(data['id'])
-
-          
+            
 
           })
 
-
         }
 
-      </script>
-    </form>
 
+        $(document).ready(function () {
+
+          // Input fields increment limitation
+          var maxField = 50;
+          // Add button selector
+          var addButton = $('.add_button');
+          // Input field wrapper
+          var emp = $('#employee_tbl');
+          // New input field html 
+          let count =1
+
+          var fieldHTML = `
+            <div>
+              
+                <span class="input-group-addon"> Choose a Vulnerability:</span>
+         
+                  <select name="comp_select${count}" class="selectpicker form-control"  id="all_classes${count}">
+                  {% for c in vulnList %}
+                  <option value="{{ c.id }}">{{ c.vulnerability }}</option>
+                  {% endfor %}
+                </select>
+               
+                <input type="text" id="all_entries${count}" name="fname_detail"  class="result" value="{{vulnItem}}">
+                <input type="text" id="all_entries2${count}" name="fname_remediation"  class="result2" value="{{vulnItem}}">
+                <button type = "button" onClick="window.location='/upload_photo'">Upload</button>
+                <i class="fas fa-minus-circle remove_button"></i>
+                <br><br>
+
+              
+            </div>`;
+
+          var x = 1;
+
+            // Once add button is clicked
+          $(addButton).click(function () {
+              // Check maximum number of input fields
+              count++;
+
+              if (x < maxField) { 
+                // Increment field counter
+                x++;
+                // Add field html
+                $(emp).append(fieldHTML);
+                $(emp)
+                .find("select")
+                .each(function (x) {
+                  $(this).attr("name", "comp_select" + x);
+                  $(this).attr("id", "all_classes" + x);
+                });
+                $(emp)
+                .find("input")
+                .each(function (x) {
+                  $(this).attr("id", "all_entries" + x);
+                  $(this).attr("id", "all_entries2" + x);
+                });
+
+
+                var tam= document.querySelectorAll('[id^="all_classes"]').length
+                tam = tam-1
+                
+                console.log(tam)
+                vuln_select = document.querySelectorAll('[id^="all_classes"]')[tam]
+               
+
+                vuln_select.onchange = function (){
+
+                    
+
+                    fetch(`/update_dropdown/${vuln_select.value}`)
+                  .then(
+                    
+                    (response) => response.json()
+                
+                  ).then(async function(data){
+
+                    const result = document.querySelectorAll('.result')[tam];
+                    
+                    result.value = data['detail']
+
+                    const result2 = document.querySelectorAll('.result2')[tam];
+                    
+                    result2.value = data['id']
+
+                   
+
+                  })
+
+                }
+
+
+              }
+            });
+
+            // Once remove button is clicked
+            $(emp).on('click', '.remove_button', function (evt) {
+              evt.preventDefault();
+
+              // Remove field html
+              $(evt.target).closest('div').remove();
+              // Decrement field counter
+              x--;
+            });
+
+
+            
+          });
+
+
+
+   
+
+      </script>
+    
   </body>
 </html>
