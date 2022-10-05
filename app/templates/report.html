@@ -13,7 +13,7 @@
       <label for="vulnerability">App Name</label>
       <input type="text" class="form-control" name="name" id="name">
       <label for="date">Date</label>
-      <input type="text" class="form-control" name="date" id="date">
+      <input type="date" class="form-control" name="date" id="date">
       <br><br>
 
     
@@ -38,10 +38,11 @@
 
              
               </div>
-          <button type = "button" onClick="window.location='/get_csv'">Download! </button>
+         
       </div>
-      <!-- <input type="submit" value="Generate"> 
-       -->
+      <input type="submit"  value="Generate CSV"> 
+      
+      
     </form>
     
      
@@ -108,8 +109,8 @@
                   {% endfor %}
                 </select>
                
-                <input type="text" id="all_entries${count}" name="fname_detail"  class="result" value="{{vulnItem}}">
-                <input type="text" id="all_entries2${count}" name="fname_remediation"  class="result2" value="{{vulnItem}}">
+                <input type="text" id="all_entries${count}" name="fname_detail${count}"  class="result" value="{{vulnItem}}">
+                <input type="text" id="all_entries2${count}" name="fname_remediation${count}"  class="result2" value="{{vulnItem}}">
                 <button type = "button" onClick="window.location='/upload_photo'">Upload</button>
                 <i class="fas fa-minus-circle remove_button"></i>
                 <br><br>
@@ -192,6 +193,15 @@
 
             
           });
+
+
+
+
+        sub_select = document.getElementById('submit')
+
+ 
+
+
 
 
 

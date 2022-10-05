@@ -1,7 +1,7 @@
 
 from crypt import methods
 import re
-from flask import Flask, request, redirect, url_for,render_template,jsonify,abort,send_from_directory,Response
+from flask import Flask, request, redirect, url_for,render_template,jsonify,abort,send_from_directory,Response,send_file
 import json
 from flask_mysqldb import MySQL
 import mysql.connector
@@ -33,27 +33,27 @@ config = {
 
 
 
-@app.route("/get_csv")
-def get_csv():
-    # csv = '1,2,3\n4,5,6\n'
-    # my_dict_vuln = update_dropdown()
+@app.route("/get_csv/<my_dict>",methods=['GET'])
+def get_csv(my_dict):
 
-    # my_dict_str= my_dict_vuln.json()
-    r = request.post('http://db:5000/update_dropdown')
+    
+    csv_tmp=json.loads(my_dict.replace("\'", "\""))
 
-    my_dict = r.json()
-
-
+    # return b
+    
     with open('report_vuln.csv', 'w') as f:  
-        w = csv.DictWriter(f, my_dict.keys())
+        w = csv.DictWriter(f, csv_tmp.keys())
         w.writeheader()
-        w.writerow(my_dict)
+        w.writerow(csv_tmp)
 
-        return Response(
-            csv,
-            mimetype="text/csv",
-            headers={"Content-disposition":
-                    "attachment; filename=report_vuln.csv"})
+    return send_file(
+        'report_vuln.csv',
+        mimetype='text/csv',
+        download_name='report_vuln.csv',
+        as_attachment=True
+    )
+
+     
 
 
 
@@ -136,16 +136,20 @@ def get_update_dropdown(id):
 @app.route('/update_dropdown/',methods=['POST'])
 def update_dropdown():
 
-
+        # select = request.args.to_dict()
         select = request.form.to_dict()
-        return jsonify({ "vuln": str(select) })
+        # return jsonify({ "vuln": str(select) })
 
-        # my_dict_vuln = jsonify({ "vuln": str(select) })
+        # return str(select)
+        select = str(select)
+        # my_dict_json = json.loads(select)
 
-        # print(my_dict_vuln)
-        
+        my_dict=json.loads(select.replace("\'", "\""))
 
-        # get_csv(jsonify({ "vuln": str(select) }))
+        return redirect(url_for('get_csv', my_dict=my_dict))
+
+        # return my_dict
+
 
 
             

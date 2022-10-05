@@ -1,0 +1,2 @@
+name,date,comp_select0,fname_detail,fname_remediation,comp_select1,fname_detail1,fname_remediation1
+app,2022-10-05,3,injetar caracter especial,bind de query,1,usa js para executar,"Usar CSP, headers e evitar caracteres especiais"
