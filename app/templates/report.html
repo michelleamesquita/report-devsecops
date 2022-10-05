@@ -31,6 +31,8 @@
             
              <input type="text" id="all_entries" name="fname_detail"  class="result" value="{{vulnItem}}">
              <input type="text" id="all_entries2" name="fname_remediation"  class="result2" value="{{vulnItem}}">
+             <input type="hidden" id="all_entries3" name="fname_vuln" class="result3" value="{{vulnItem}}">
+
              <button type = "button" onClick="window.location='/upload_photo'">Upload</button>
              <i class="fas fa-plus-circle add_button"></i>
 
@@ -80,6 +82,10 @@
             result2.value = data['id']
             // console.log(vuln_select.value)
             // console.log(data['id'])
+
+            const result3 = document.querySelectorAll('.result3')[tam];
+          
+            result3.value = data['name']
             
 
           })
@@ -111,6 +117,8 @@
                
                 <input type="text" id="all_entries${count}" name="fname_detail${count}"  class="result" value="{{vulnItem}}">
                 <input type="text" id="all_entries2${count}" name="fname_remediation${count}"  class="result2" value="{{vulnItem}}">
+                <input type="hidden" id="all_entries3${count}" name="fname_vuln${count}" class="result3" value="{{vulnItem}}">
+
                 <button type = "button" onClick="window.location='/upload_photo'">Upload</button>
                 <i class="fas fa-minus-circle remove_button"></i>
                 <br><br>
@@ -141,6 +149,7 @@
                 .each(function (x) {
                   $(this).attr("id", "all_entries" + x);
                   $(this).attr("id", "all_entries2" + x);
+                  $(this).attr("id", "all_entries3" + x);
                 });
 
 
@@ -169,6 +178,10 @@
                     const result2 = document.querySelectorAll('.result2')[tam];
                     
                     result2.value = data['id']
+
+                    const result3 = document.querySelectorAll('.result3')[tam];
+          
+                    result3.value = data['name']
 
                    
 

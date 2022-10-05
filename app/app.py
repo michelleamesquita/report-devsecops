@@ -46,6 +46,7 @@ def get_csv(my_dict):
         w.writeheader()
         w.writerow(csv_tmp)
 
+
     return send_file(
         'report_vuln.csv',
         mimetype='text/csv',
@@ -53,10 +54,20 @@ def get_csv(my_dict):
         as_attachment=True
     )
 
-     
+    # with open('file.json', 'w') as file:
+    #  file.write(json.dumps(csv_tmp))
 
+    # df = pd.read_json('file.json')
+    # df.to_csv('courses.csv')
 
+    # return send_file(
+    #     'report_vuln.csv',
+    #     mimetype='text/csv',
+    #     download_name='courses.csv',
+    #     as_attachment=True
+    # )
 
+  
 
 @app.route('/uploads/<filename>')
 def upload(filename):
@@ -122,10 +133,11 @@ def get_update_dropdown(id):
             for row in mycursor.fetchall():
                     cr= row[3]
                     cr_vuln = row[2]
+                    cr_name = row[1]
                 
 
         
-            vuln= jsonify({ "id": str(cr), "detail": str(cr_vuln)})
+            vuln= jsonify({ "id": str(cr), "detail": str(cr_vuln), "name": str(cr_name)})
 
             return vuln
 
@@ -151,10 +163,6 @@ def update_dropdown():
         # return my_dict
 
 
-
-            
-
-   
 
 def parseCSV(filePath):
     
