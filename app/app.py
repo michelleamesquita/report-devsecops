@@ -1,7 +1,7 @@
 
 from crypt import methods
 import re
-from flask import Flask, request, redirect, url_for,render_template,jsonify,abort,send_from_directory,Response,send_file
+from flask import Flask, request, redirect, url_for,render_template,jsonify,abort,send_from_directory,Response,send_file,escape
 import json
 from flask_mysqldb import MySQL
 import mysql.connector
@@ -43,21 +43,6 @@ def get_csv(my_dict):
 
     # return b
     
-    # with open('report_vuln.csv', 'w') as f:  
-    #     w = csv.DictWriter(f, csv_tmp.keys())
-    #     w.writeheader()
-    #     w.writerow(csv_tmp)
-
-
-    # return send_file(
-    #     'report_vuln.csv',
-    #     mimetype='text/csv',
-    #     download_name='report_vuln.csv',
-    #     as_attachment=True
-    # )
-
-    # with open('data.json', 'w') as f:
-    #     json.dump(csv_tmp, f)
     
 
     comp=[]
@@ -243,7 +228,7 @@ def update(id):
     if request.method == 'GET':
         mycursor.execute("SELECT * FROM report WHERE id = %s", (id,))
         for row in mycursor.fetchall():
-            cr.append({"id": row[0], "vulnerability": row[1],"detail": row[2] ,"remediation": row[3]})
+            cr.append({"id": row[0], "vulnerability": escape(row[1]),"detail": escape(row[2]) ,"remediation": escape(row[3])})
         
         return render_template("updatelist.html", vuln = cr[0])
 
@@ -290,7 +275,7 @@ def dblist():
         mycursor.execute("SELECT * FROM report")
 
         for row in mycursor.fetchall():
-            cr.append({"id": row[0], "vulnerability": row[1], "detail": row[2],"remediation": row[3]})
+            cr.append({"id": row[0], "vulnerability": escape(row[1]), "detail": escape(row[2]),"remediation": escape(row[3])})
         
         return render_template("updateindex.html", vulns = cr)
 
