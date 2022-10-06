@@ -43,22 +43,6 @@ def get_csv(my_dict):
 
     # return b
     
-    # with open('report_vuln.csv', 'w') as f:  
-    #     w = csv.DictWriter(f, csv_tmp.keys())
-    #     w.writeheader()
-    #     w.writerow(csv_tmp)
-
-
-    # return send_file(
-    #     'report_vuln.csv',
-    #     mimetype='text/csv',
-    #     download_name='report_vuln.csv',
-    #     as_attachment=True
-    # )
-
-    # with open('data.json', 'w') as f:
-    #     json.dump(csv_tmp, f)
-    
 
     comp=[]
     name=[]
