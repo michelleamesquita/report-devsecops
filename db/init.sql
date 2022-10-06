@@ -10,7 +10,7 @@ CREATE TABLE report (
     PRIMARY KEY (id)
 );
 
-INSERT INTO report (id,vulnerability,detail, remediation) VALUES (1, 'xss','usa js para executar' ,'Usar CSP, headers e evitar caracteres especiais');
+INSERT INTO report (id,vulnerability,detail, remediation) VALUES (1, 'Click vuln','---' ,'---');
 
 
 

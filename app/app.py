@@ -9,6 +9,7 @@ import os
 import pandas as pd
 from werkzeug.utils import secure_filename
 import csv
+import numpy as np
 
 
 app = Flask(__name__)
@@ -33,6 +34,7 @@ config = {
 
 
 
+
 @app.route("/get_csv/<my_dict>",methods=['GET'])
 def get_csv(my_dict):
 
@@ -41,11 +43,52 @@ def get_csv(my_dict):
 
     # return b
     
-    with open('report_vuln.csv', 'w') as f:  
-        w = csv.DictWriter(f, csv_tmp.keys())
-        w.writeheader()
-        w.writerow(csv_tmp)
+    # with open('report_vuln.csv', 'w') as f:  
+    #     w = csv.DictWriter(f, csv_tmp.keys())
+    #     w.writeheader()
+    #     w.writerow(csv_tmp)
 
+
+    # return send_file(
+    #     'report_vuln.csv',
+    #     mimetype='text/csv',
+    #     download_name='report_vuln.csv',
+    #     as_attachment=True
+    # )
+
+    # with open('data.json', 'w') as f:
+    #     json.dump(csv_tmp, f)
+    
+
+    comp=[]
+    name=[]
+    date=[]
+    vuln=[]
+    detail=[]
+    remediation=[]
+
+    for key in csv_tmp.keys():
+        if key.startswith('name'):
+            name.append(csv_tmp[key])
+        if key.startswith('comp'):
+            comp.append(csv_tmp[key])
+        if key.startswith('date'):
+            date.append(csv_tmp[key])
+        if ('vuln') in key:
+            vuln.append(csv_tmp[key])
+        if ('detail') in key:
+            detail.append(csv_tmp[key])
+        if ('remediation') in key:
+            remediation.append(csv_tmp[key])
+
+    for i in range(len(vuln)-1):
+        name.append("")
+        date.append("")
+            
+
+    df= pd.DataFrame({"Name": name, "Date": date, "Vulnerability": vuln,"Detail":detail,"Remediation":remediation })
+
+    df.to_csv('report_vuln.csv')
 
     return send_file(
         'report_vuln.csv',
@@ -53,19 +96,6 @@ def get_csv(my_dict):
         download_name='report_vuln.csv',
         as_attachment=True
     )
-
-    # with open('file.json', 'w') as file:
-    #  file.write(json.dumps(csv_tmp))
-
-    # df = pd.read_json('file.json')
-    # df.to_csv('courses.csv')
-
-    # return send_file(
-    #     'report_vuln.csv',
-    #     mimetype='text/csv',
-    #     download_name='courses.csv',
-    #     as_attachment=True
-    # )
 
   
 

@@ -3,7 +3,7 @@
   <head>
     <title>Vulnerability</title>
   </head>
-  <h1>Report! 🦊 </h1>
+  <h1>Report! 🐼 </h1>
     <div>
     <a href="/">back</a> <br><br>
     </div>
@@ -144,13 +144,23 @@
                   $(this).attr("name", "comp_select" + x);
                   $(this).attr("id", "all_classes" + x);
                 });
-                $(emp)
-                .find("input")
-                .each(function (x) {
-                  $(this).attr("id", "all_entries" + x);
-                  $(this).attr("id", "all_entries2" + x);
-                  $(this).attr("id", "all_entries3" + x);
-                });
+               
+
+                $('.result').each(function (index,element) {
+                element.setAttribute("id" , 'all_entries'+index);
+                element.setAttribute("name" , 'fname_detail'+index);})
+                
+                $('.result2').each(function (index,element) {
+                element.setAttribute("id" , 'all_entries2'+index);
+                element.setAttribute("name" , 'fname_remediation'+index);})
+
+                $('.result3').each(function (index,element) {
+                element.setAttribute("id" , 'all_entries3'+index);
+                element.setAttribute("name" , 'fname_vuln'+index);})
+         
+   
+            
+                
 
 
                 var tam= document.querySelectorAll('[id^="all_classes"]').length
