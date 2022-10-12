@@ -1,6 +1,5 @@
 
-from crypt import methods
-import re
+
 from flask import Flask, request, redirect, url_for,render_template,jsonify,abort,send_from_directory,Response,send_file,escape
 import json
 from flask_mysqldb import MySQL
@@ -8,13 +7,13 @@ import mysql.connector
 import os
 import pandas as pd
 from werkzeug.utils import secure_filename
-import csv
-import numpy as np
-
+import urllib.parse
+from unicodedata import normalize
+import os
 
 app = Flask(__name__)
 
-# Change this to your secret key (can be anything, it's for extra protection)
+
 app.secret_key = 'key'
 app.config['UPLOAD_PATH']= 'src'
 app.config["SESSION_PERMANENT"] = False
@@ -38,11 +37,43 @@ config = {
 @app.route("/get_csv/<my_dict>",methods=['GET'])
 def get_csv(my_dict):
 
-    
-    csv_tmp=json.loads(my_dict.replace("\'", "\""))
+    my_dict = urllib.parse.unquote(my_dict)
+    # my_dict = normalize('NFKD', my_dict).encode('ASCII','ignore').decode('ASCII')
 
-    # return b
+    # my_dict = my_dict.replace("\'", "\"")
     
+    # return my_dict
+
+    # csv_tmp=json.loads(my_dict.replace("\'", "\""))
+
+    # replace text 
+    my_dict = my_dict.replace("('", '*').replace("')", '**')
+    my_dict = my_dict.replace("[", '***').replace("]", '****')
+    my_dict = my_dict.replace("}'", '****').replace("'/", '*****').replace("'&", '******')
+    my_dict = my_dict.replace("'", '"') \
+        .replace('**',"')").replace('*',"('").replace('***',"[") \
+        .replace('****',"]").replace('*****','}').replace('******',"'/") \
+        .replace('*******',"'&").replace('"self"',"'self'").replace('"ambiente"',"'ambiente'") \
+        .replace('"http://java.sun.com/jsp/jstl/functions"prefix="fn"',"'http://java.sun.com/jsp/jstl/functions'prefix='fn%'") \
+        .replace(',"',",'").replace('"password"',"'password'").replace('?"', "?'").replace('"user"',"'user'") \
+        .replace('"username"' ,"'username'").replace(' "X-Frame-Options", "DENY" ' ," 'X-Frame-Options', 'DENY' ") \
+        .replace('" UPDATE products set price = price-1 where name = :1 "',"' UPDATE products set price = price-1 where name = :1' " ) \
+        .replace('" <add name=‘Strict-Transport-Security’ value=‘max-age=31536000; includeSubDomains’/> "',"' <add name=‘Strict-Transport-Security’ value=‘max-age=31536000; includeSubDomains’/> " ) \
+        .replace(' casewhenv_risk="RISK"then"Y"else"N" ' ," casewhenv_risk='RISK'then'Y'else'N' ")
+    
+
+    
+
+    with open("data.json", "w") as text_file:
+        text_file.write(my_dict)
+
+
+    with open('data.json', encoding='utf-8') as f:
+        csv_tmp = json.loads(f.read().encode('utf-8').decode())
+
+
+    os.remove("data.json") 
+   
     
 
     comp=[]
@@ -78,7 +109,7 @@ def get_csv(my_dict):
     return send_file(
         'report_vuln.csv',
         mimetype='text/csv',
-        download_name='report_vuln.csv',
+        download_name=f'{name[0]}.csv',
         as_attachment=True
     )
 
@@ -171,7 +202,9 @@ def update_dropdown():
         select = str(select)
         # my_dict_json = json.loads(select)
 
-        my_dict=json.loads(select.replace("\'", "\""))
+        # my_dict=json.loads(select.replace("\'", "\""))
+
+        my_dict = urllib.parse.quote(select, safe='')
 
         return redirect(url_for('get_csv', my_dict=my_dict))
 
