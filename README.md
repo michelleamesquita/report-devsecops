@@ -11,4 +11,7 @@
 
 ```http://localhost:8090```
 
+----
+![My Image](src/fig2.png)
+
 Enjoy it 💜
