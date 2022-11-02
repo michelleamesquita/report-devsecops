@@ -9,11 +9,34 @@
     </div>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
 
+
     <form class="form-inline" method="POST" action="/update_dropdown/" id="firstname1" >
       <label for="vulnerability">App Name</label>
       <input type="text" class="form-control" name="name" id="name">
       <label for="date">Date</label>
       <input type="date" class="form-control" name="date" id="date">
+      <br><br>
+
+      <label for="url">URL Tool</label>
+      <input type="text" class="form-control" name="url" id="url">
+      <label for="tool">Tool</label>
+      <span> Security Tool</span>
+      <select name="fname_tool" class="result7"  id="class_tool" >
+        <option value="SAST">SAST</option>
+        <option value="DAST">DAST</option>
+        <option value="SCA">SCA</option>
+      </select>
+      <br><br>
+
+      <span> False Positive:</span>
+      <br><br>
+      <label for="criticalvuln">Critical</label>
+      <input type="text" class="form-criticalvuln" name="critical" id="criticalvuln">
+      <label for="highvuln">High</label>
+      <input type="text" class="form-highvuln" name="high" id="highvuln">
+      <label for="medhvuln">Medium</label>
+      <input type="text" class="form-mediumvuln" name="med" id="medhvuln">
+      <button type = "button"  class="result4" onClick="window.open('/upload_photo/0', '', 'width=300,height=300')">Upload</button>
       <br><br>
 
     
@@ -32,8 +55,18 @@
              <input type="text" id="all_entries" name="fname_detail"  class="result" value="{{vulnItem}}">
              <input type="text" id="all_entries2" name="fname_remediation"  class="result2" value="{{vulnItem}}">
              <input type="hidden" id="all_entries3" name="fname_vuln" class="result3" value="{{vulnItem}}">
+             <input type="hidden" id="all_entries4" name="fname_reference" class="result6" value="{{vulnItem}}">
+             <select name="fname_class" class="result5"  id="class_vuln" >
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
 
-             <button type = "button" onClick="window.location='/upload_photo'">Upload</button>
+          
+             <input type="number" id="qtd" name="qtd" min="1" max="500" placeholder="Set Vuln quantity" class="result8">
+             <!-- <button type = "button"  class="result4" onClick="window.location='/upload_photo/{{id}}'">Upload</button> -->
+             <button type = "button"  class="result4" onClick="window.open('/upload_photo/1', '', 'width=300,height=300')">Upload</button>
+
              <i class="fas fa-plus-circle add_button"></i>
 
              <br><br>
@@ -42,7 +75,9 @@
               </div>
          
       </div>
-      <input type="submit"  value="Generate CSV"> 
+      <input type="submit" name="op" value="Generate CSV"> 
+      <input type="submit" name="op" value="Generate Excel"> 
+      <!-- <button type="button"    onclick="window.location='/upload_photo/{{id}}'">Generate Excel</button> -->
       
       
     </form>
@@ -86,6 +121,11 @@
             const result3 = document.querySelectorAll('.result3')[tam];
           
             result3.value = data['name']
+
+
+            const result6 = document.querySelectorAll('.result6')[tam];
+          
+            result6.value = data['reference']
             
 
           })
@@ -118,15 +158,23 @@
                 <input type="text" id="all_entries${count}" name="fname_detail${count}"  class="result" value="{{vulnItem}}">
                 <input type="text" id="all_entries2${count}" name="fname_remediation${count}"  class="result2" value="{{vulnItem}}">
                 <input type="hidden" id="all_entries3${count}" name="fname_vuln${count}" class="result3" value="{{vulnItem}}">
+                <input type="hidden" id="all_entries4${count}" name="fname_reference${count}" class="result6" value="{{vulnItem}}">
+                <select name="fname_class${count}" id="class_vuln${count}" class="result5">
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
 
-                <button type = "button" onClick="window.location='/upload_photo'">Upload</button>
+                <input type="number" id="qtd${count}" name="qtd${count}" min="1" max="500" placeholder="Set Vuln quantity" class="result8">
+                <button type = "button" class="result4" onClick="window.open('/upload_photo/${x}', '', 'width=300,height=300')">Upload</button>
+            
                 <i class="fas fa-minus-circle remove_button"></i>
                 <br><br>
 
               
             </div>`;
 
-          var x = 1;
+          var x = 2;
 
             // Once add button is clicked
           $(addButton).click(function () {
@@ -154,12 +202,28 @@
                 element.setAttribute("id" , 'all_entries2'+index);
                 element.setAttribute("name" , 'fname_remediation'+index);})
 
+                $('.result6').each(function (index,element) {
+                element.setAttribute("id" , 'all_entries4'+index);
+                element.setAttribute("name" , 'fname_reference'+index);})
+
                 $('.result3').each(function (index,element) {
                 element.setAttribute("id" , 'all_entries3'+index);
                 element.setAttribute("name" , 'fname_vuln'+index);})
+
+
+                $('.result4').each(function (index,element) {
+                element.setAttribute("onclick" , `window.open('/upload_photo/${index}', '', 'width=300,height=300')`);
+                })
+
+
+                $('.result5').each(function (index,element) {
+                element.setAttribute("id" , 'class_vuln'+index);
+                element.setAttribute("name" , 'fname_class'+index);})
+
+                $('.result8').each(function (index,element) {
+                element.setAttribute("id" , 'qtd'+index);
+                element.setAttribute("name" , 'qtd'+index);})
          
-   
-            
                 
 
 
@@ -193,6 +257,11 @@
           
                     result3.value = data['name']
 
+
+                    const result6 = document.querySelectorAll('.result6')[tam];
+          
+                    result6.value = data['reference']
+
                    
 
                   })
@@ -221,10 +290,6 @@
 
 
         sub_select = document.getElementById('submit')
-
- 
-
-
 
 
 

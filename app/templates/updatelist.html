@@ -10,6 +10,7 @@
     <div>
     <a href="/dblist">back</a>
     </div>
+    <br><br>
     
 
     <form method="POST" action="" enctype="multipart/form-data">
@@ -17,14 +18,19 @@
 
       <div class="form-group row">
         <label for="vulnerability">Vulnerability</label>
-        <input type="text" class="form-control" name="vulnerability" id="vulnerability">
+        <input type="text" class="form-control" name="vulnerability" id="vulnerability" value="{{ vuln.vulnerability }}" rows="4" cols="50">
 
-        <label for="price">Detail</label>
-        <input type="text" class="form-control" name="detail" id="detail">
+        <p><label for="price">Detail</label></p>
+        <textarea type="text" class="form-control" name="detail" id="detail"  rows="4" cols="50">{{ vuln.detail }}</textarea>
       
-        <label for="price">Remediation</label>
-        <input type="text" class="form-control" name="remediation" id="remediation">
+        <p><label for="price">Remediation</label></p>
+        <textarea type="text" class="form-control" name="remediation" id="remediation"  rows="4" cols="50">{{ vuln.remediation }}</textarea>
+
+        <p><label for="price">Reference</label></p>
+        <input type="text" class="form-control" name="reference" id="reference" value="{{ vuln.reference }}">
       </div>
+
+      <br><br>
       <button type="btnAdd" class="btn btn-primary">Submit</button>
       
 

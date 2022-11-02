@@ -4,3 +4,4 @@ flask-mysqldb
 Flask-Session
 pandas
 requests
+xlsxwriter
