@@ -103,6 +103,8 @@ def upload_photo(id):
 
 
         modified_name = "{}_{}".format(id,filename)
+        id=int(id)+1
+        id=str(id)
        
         if filename != '':
             file_ext = os.path.splitext(filename)[1]
