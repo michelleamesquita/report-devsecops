@@ -483,7 +483,7 @@ def get_excel(my_dict):
     # return str(dir_list[::-1])
 
     item = 0
-    for x in dir_list[::-1]:
+    for x in sorted(dir_list[::-1]):
 
             
             
