@@ -47,6 +47,7 @@
               <span class="input-group-addon"> Choose a Vulnerability:</span>
          
               <select name="comp_select" class="selectpicker form-control"  id="all_classes">
+                <option hidden selected>Click vuln</option>
               {% for c in vulnList %}
               <option value="{{ c.id }}">{{ c.vulnerability }}</option>
               {% endfor %}
@@ -57,13 +58,14 @@
              <input type="hidden" id="all_entries3" name="fname_vuln" class="result3" value="{{vulnItem}}">
              <input type="hidden" id="all_entries4" name="fname_reference" class="result6" value="{{vulnItem}}">
              <select name="fname_class" class="result5"  id="class_vuln" >
+              <option value="Critical">Critical</option>
               <option value="High">High</option>
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
             </select>
 
           
-             <input type="number" id="qtd" name="qtd" min="1" max="500" placeholder="Set Vuln quantity" class="result8">
+             <input type="number" id="qtd" name="qtd" min="1" max="3000" placeholder="Set Vuln quantity" class="result8">
              <!-- <button type = "button"  class="result4" onClick="window.location='/upload_photo/{{id}}'">Upload</button> -->
              <button type = "button"  class="result4" onClick="window.open('/upload_photo/1', '', 'width=300,height=300')">Upload</button>
 
@@ -160,6 +162,7 @@
                 <input type="hidden" id="all_entries3${count}" name="fname_vuln${count}" class="result3" value="{{vulnItem}}">
                 <input type="hidden" id="all_entries4${count}" name="fname_reference${count}" class="result6" value="{{vulnItem}}">
                 <select name="fname_class${count}" id="class_vuln${count}" class="result5">
+                  <option value="Critical">Critical</option>
                   <option value="High">High</option>
                   <option value="Medium">Medium</option>
                   <option value="Low">Low</option>

@@ -16,7 +16,6 @@ import os
 from io import BytesIO
 import xlsxwriter
 import glob
-from get_file import *
 
 app = Flask(__name__)
 
@@ -44,8 +43,59 @@ config = {
 @app.route("/get_csv/<my_dict>",methods=['GET'])
 def get_csv(my_dict):
 
-    csv_tmp = get_file(my_dict)
+    my_dict = urllib.parse.unquote(my_dict)
+    # my_dict = normalize('NFKD', my_dict).encode('ASCII','ignore').decode('ASCII')
+
+    # my_dict = my_dict.replace("\'", "\"")
+    
+    # return my_dict
+
+    # csv_tmp=json.loads(my_dict.replace("\'", "\""))  
+
+    # replace text 
+    my_dict = my_dict.replace('document.cookie = "ActionID=" + actionsArray[value] + "; expires=" + date.toUTCString() + "; path=/myApp/" + "; secure;" ' ,"document.cookie = 'ActionID=' + actionsArray[value] + '; expires=' + date.toUTCString() + '; path=/myApp/' + '; secure;' ")
+    my_dict = my_dict.replace("Request['value']","Request['value']")
+    my_dict = my_dict.replace('referer = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : "None"' ,"referer = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : 'None'")
+    my_dict = my_dict.replace('builder["Persist Security Info"] = "False"' ,"builder['Persist Security Info'] = 'False'")
+    my_dict = my_dict.replace("('", '*').replace("')", '**')
+    my_dict = my_dict.replace("[", '***').replace("]", '****')
+    my_dict = my_dict.replace("}'", '****').replace("'/", '*****').replace("'&", '******')
+    my_dict = my_dict.replace("'", '"') \
+        .replace('**',"')").replace('*',"('").replace('***',"[") \
+        .replace('****',"]").replace('*****','}').replace('******',"'/") \
+        .replace('*******',"'&").replace('"self"',"'self'").replace('"ambiente"',"'ambiente'") \
+        .replace('"http://java.sun.com/jsp/jstl/functions"prefix="fn"',"'http://java.sun.com/jsp/jstl/functions'prefix='fn%'") \
+        .replace(',"',",'").replace('"password"',"'password'").replace('?"', "?'").replace('"user"',"'user'") \
+        .replace('"username"' ,"'username'").replace(' "X-Frame-Options", "DENY" ' ," 'X-Frame-Options', 'DENY' ") \
+        .replace('" UPDATE products set price = price-1 where name = :1 "',"' UPDATE products set price = price-1 where name = :1' " ) \
+        .replace('" <add name=‘Strict-Transport-Security’ value=‘max-age=31536000; includeSubDomains’/> "',"' <add name=‘Strict-Transport-Security’ value=‘max-age=31536000; includeSubDomains’/> " ) \
+        .replace(' casewhenv_risk="RISK"then"Y"else"N" ' ," casewhenv_risk='RISK'then'Y'else'N' ") \
+        .replace('"Data Source=server63; Initial Catalog=Clinic; Integrated Security=true; Column Encryption Setting=enabled"' ,"'Data Source=server63; Initial Catalog=Clinic; Integrated Security=true; Column Encryption Setting=enabled'") \
+        .replace('builder["Persist Security Info"] = "False"' ,"builder['Persist Security Info'] = 'False'") \
+        .replace('"Data Source=server63; Initial Catalog=Clinic; Integrated Security=true; Column Encryption Setting=enabled; Encrypt=true; TrustServerCertificate=true"' ,"'Data Source=server63; Initial Catalog=Clinic; Integrated Security=true; Column Encryption Setting=enabled; Encrypt=true; TrustServerCertificate=true'") \
+        .replace('''Request')('"value"')')''' ,"(Request[param])") \
+        .replace('''"None"''' ,"'None'") \
+        .replace('''"param"''' ,"'param'") \
+        .replace('''"true"''' ,"'true'") \
+        .replace('''app.config')('"SESSION_COOKIE_SECURE "')') = True''' ,"app.config['SESSION_COOKIE_SECURE '] = True") \
+        .replace('''// Data is stored in DOM, but not persistently ')')''' ,"// Data is stored in DOM, but not persistently }") \
+        .replace('''document.cookie = "ActionID=" + actionsArray')('value')') + "; expires=" + date.toUTCString() + "; path=/myApp/" + "; secure;"''' , "document.cookie = 'ActionID=' + actionsArray')('value')') + '; expires=' + date.toUTCString() + '; path=/myApp/' + '; secure;'")
+    
+
+    
+
+    with open("data.json", "w") as text_file:
+        text_file.write(my_dict)
+
+
+    with open('data.json', encoding='utf-8') as f:
+        csv_tmp = json.loads(f.read().encode('utf-8').decode())
+
+
+    #os.remove("data.json") 
    
+    
+
     comp=[]
     name=[]
     date=[]
@@ -84,6 +134,13 @@ def get_csv(my_dict):
     )
 
   
+@app.route('/delete_photo/<string:file_tmp>', methods=['GET'])
+def delete_photo(file_tmp):
+
+    
+    if request.method == 'GET':
+       
+        os.remove(str(app.config['UPLOAD_PATH'])+"/"+file_tmp) 
 
 
 @app.route('/upload_photo/<int:id>', methods=['GET','POST'])
@@ -99,12 +156,14 @@ def upload_photo(id):
         if int(id) !=0:
             id=int(id)-1
             id=str(id)
+            modified_name = "{}_{}".format(id,filename)
+            id=int(id)+1
+            id=str(id)
+        else:
+            id=str(id)
+            modified_name = "{}_{}".format(id,filename)
             
 
-
-        modified_name = "{}_{}".format(id,filename)
-        id=int(id)+1
-        id=str(id)
        
         if filename != '':
             file_ext = os.path.splitext(filename)[1]
@@ -130,7 +189,7 @@ def report():
     mycursor = mydb.cursor()
 
    
-    mycursor.execute("SELECT * FROM report")
+    mycursor.execute("SELECT * FROM report order by vulnerability")
 
     for row in mycursor.fetchall():
             cr.append({"id": row[0], "vulnerability": row[1], "remediation": row[2]})
@@ -358,8 +417,51 @@ def index():
 def get_excel(my_dict):
 
 
-    excel_tmp = get_file(my_dict)
+    my_dict = urllib.parse.unquote(my_dict)
    
+    
+    my_dict = my_dict.replace('document.cookie = "ActionID=" + actionsArray[value] + "; expires=" + date.toUTCString() + "; path=/myApp/" + "; secure;" ' ,"document.cookie = 'ActionID=' + actionsArray[value] + '; expires=' + date.toUTCString() + '; path=/myApp/' + '; secure;' ")
+    my_dict = my_dict.replace("Request['value']","Request['value']")
+    my_dict = my_dict.replace('referer = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : "None"' ,"referer = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : 'None'")
+    my_dict = my_dict.replace('builder["Persist Security Info"] = "False"' ,"builder['Persist Security Info'] = 'False'")
+    my_dict = my_dict.replace("('", '*').replace("')", '**')
+    my_dict = my_dict.replace("[", '***').replace("]", '****')
+    my_dict = my_dict.replace("}'", '****').replace("'/", '*****').replace("'&", '******')
+    my_dict = my_dict.replace("'", '"') \
+        .replace('**',"')").replace('*',"('").replace('***',"[") \
+        .replace('****',"]").replace('*****','}').replace('******',"'/") \
+        .replace('*******',"'&").replace('"self"',"'self'").replace('"ambiente"',"'ambiente'") \
+        .replace('"http://java.sun.com/jsp/jstl/functions"prefix="fn"',"'http://java.sun.com/jsp/jstl/functions'prefix='fn%'") \
+        .replace(',"',",'").replace('"password"',"'password'").replace('?"', "?'").replace('"user"',"'user'") \
+        .replace('"username"' ,"'username'").replace(' "X-Frame-Options", "DENY" ' ," 'X-Frame-Options', 'DENY' ") \
+        .replace('" UPDATE products set price = price-1 where name = :1 "',"' UPDATE products set price = price-1 where name = :1' " ) \
+        .replace('" <add name=‘Strict-Transport-Security’ value=‘max-age=31536000; includeSubDomains’/> "',"' <add name=‘Strict-Transport-Security’ value=‘max-age=31536000; includeSubDomains’/> " ) \
+        .replace(' casewhenv_risk="RISK"then"Y"else"N" ' ," casewhenv_risk='RISK'then'Y'else'N' ") \
+        .replace('"Data Source=server63; Initial Catalog=Clinic; Integrated Security=true; Column Encryption Setting=enabled"' ,"'Data Source=server63; Initial Catalog=Clinic; Integrated Security=true; Column Encryption Setting=enabled'") \
+        .replace('builder["Persist Security Info"] = "False"' ,"builder['Persist Security Info'] = 'False'") \
+        .replace('"Data Source=server63; Initial Catalog=Clinic; Integrated Security=true; Column Encryption Setting=enabled; Encrypt=true; TrustServerCertificate=true"' ,"'Data Source=server63; Initial Catalog=Clinic; Integrated Security=true; Column Encryption Setting=enabled; Encrypt=true; TrustServerCertificate=true'") \
+        .replace('''Request')('"value"')')''' ,"(Request[param])") \
+        .replace('''"None"''' ,"'None'") \
+        .replace('''"true"''' ,"'true'") \
+        .replace('''"param"''' ,"'param'") \
+        .replace('''app.config')('"SESSION_COOKIE_SECURE "')') = True''' ,"app.config['SESSION_COOKIE_SECURE '] = True") \
+        .replace('''// Data is stored in DOM, but not persistently ')')''' ,"// Data is stored in DOM, but not persistently }") \
+        .replace('''document.cookie = "ActionID=" + actionsArray')('value')') + "; expires=" + date.toUTCString() + "; path=/myApp/" + "; secure;"''' , "document.cookie = 'ActionID=' + actionsArray')('value')') + '; expires=' + date.toUTCString() + '; path=/myApp/' + '; secure;'")
+     
+
+    
+
+    with open("data.json", "w") as text_file:
+        text_file.write(my_dict)
+
+
+    with open('data.json', encoding='utf-8') as f:
+        excel_tmp = json.loads(f.read().encode('utf-8').decode())
+
+
+    os.remove("data.json") 
+   
+    
 
     comp=[]
     name=[]
@@ -430,6 +532,7 @@ def get_excel(my_dict):
 
     worksheet1 = writer.sheets['Results']
     worksheet1.set_column('C:F', 30)
+    
 
 
     worksheet1.write('B1', 'Name')
@@ -441,7 +544,11 @@ def get_excel(my_dict):
     worksheet1.write('H1', 'Quantity')
     worksheet1.write('I1', 'Reference')
 
-    header_format1 = workbook.add_format({'bg_color': '#FFE100','bold': True, 'font_size': 14 , 'align': 'center'})
+    header_format1 = workbook.add_format({'bg_color': '#FFE100','bold': True})
+
+    format0 = workbook.add_format({'bg_color': '#C7A4D3',
+                               'font_color': '#62177C'})
+
     format1 = workbook.add_format({'bg_color': '#FFC7CE',
                                'font_color': '#9C0006'})
 
@@ -454,6 +561,12 @@ def get_excel(my_dict):
     format4 = workbook.add_format({'text_wrap': True})
     format5 = workbook.add_format({'border': 2})
 
+    wrap = workbook.add_format({'text_wrap': True})
+
+    hyper_link = workbook.add_format({'font_color': 'blue', 'underline':  1,'text_wrap': True})
+
+    worksheet1.set_column('B:F',cell_format=wrap)
+
     # worksheet1.hide_gridlines(2)
 
 
@@ -463,7 +576,10 @@ def get_excel(my_dict):
     worksheet1.insert_image('A1',"icon/"+str(dir_list[0]),{'object_position': 4})
 
 
-    
+    worksheet1.conditional_format('G2:G100', {'type': 'formula',
+                                         'criteria': 'G2:G100="Critical"',
+                                         'format': format0})
+
     worksheet1.conditional_format('G2:G100', {'type': 'formula',
                                          'criteria': 'G2:G100="High"',
                                          'format': format1})
@@ -481,9 +597,10 @@ def get_excel(my_dict):
     dir_list = os.listdir(app.config['UPLOAD_PATH'])
 
     # return str(dir_list[::-1])
+    # worksheet.write_url('A1', 'internal:Sheet2!A1', string="Link to sheet2", tip="Click here")
 
     item = 0
-    for x in dir_list[::-1]:
+    for x in sorted(dir_list[::-1]):
 
             
             
@@ -502,13 +619,15 @@ def get_excel(my_dict):
               
                 worksheet = workbook.add_worksheet(f"{x}")
                 worksheet.set_row(0, cell_format=header_format1)
-                worksheet.write('A1', f"ID Vulnerabilidade {str(id_vuln)}")
+                #worksheet.write('A1', f"ID Vulnerabilidade {str(id_vuln)}")
                 worksheet.insert_image('B4',str(app.config['UPLOAD_PATH'])+"/"+x)
+                worksheet.write_url(f'A1', f'internal:Results!D{id_vuln+2}',string=f"ID Vulnerabilidade {str(id_vuln)}",cell_format=header_format1)
+                worksheet1.write_url(f'D{id_vuln+2}', f"internal:'{x}'!A1",string=vuln[id_vuln],cell_format=hyper_link)
 
             worksheet.hide_gridlines(2)
 
             item+=1
-            
+
             
     
     

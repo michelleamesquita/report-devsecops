@@ -6,12 +6,19 @@
   </head>
   <body>
     <h1>Upload Photo</h1>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
 
     <form method="POST" action="/upload_photo/{{id}}" enctype="multipart/form-data">
-      <p><input type="file" name="file"></p>
+      <p><input type="file" name="file" id="file"></p>
       <p><input type="submit" value="Submit"></p>
+
     </form>
-    <hr>
+
+    <!-- <button type="button"    onclick="delete_file()">Delete</button> -->
+
+    <i class="fa fa-trash"  onclick="delete_file()" aria-hidden="true"></i>
+   
+   
    
     </hr>
 
@@ -19,4 +26,44 @@
 
   </body>
 </html>
+
+
+
+<script type="text/javascript">
+
+
+    var file_name=""
+    var file_obj=""
+
+    document.getElementById('file').onchange  = function (e) {
+        console.log('Selected file: ' + e.target.files[0].name);
+
+         file_name = e.target.files[0].name
+         file_obj =  document.getElementById('file').value
+       
+      };
+
+  //  console.log(file_name);
+  //  console.log("ok :)")
+      
+   function delete_file(){
+
+       console.log("deleted :)")
+     
+       file_obj = null
+
+      // fetch(`/delete_photo/${file_name}`)
+      // .then(
+    
+      // console.log("deleted :)")
+      
+      // )
+    
+    }
+
+      
+
+
+
+</script>
 {% endautoescape %}
