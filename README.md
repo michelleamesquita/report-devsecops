@@ -14,4 +14,11 @@
 ----
 ![My Image](src/fig2.png)
 
+----
+## Excel Genrated!
+
+- Just add your vulnerabilities and check like that on report tab:
+
+![My Image](src/excel.png)
+
 Enjoy it 💜
