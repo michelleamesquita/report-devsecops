@@ -1,12 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <!doctype html>
 <html>
   <head>
     <title>Vulnerability</title>
+
+    <style>
+      body {background: #f9f9f9 !important}
+    </style>
+
   </head>
-  <h1>Report! 🐼 </h1>
-    <div>
-    <a href="/">back</a> <br><br>
-    </div>
+
+  <body>
+  <nav class="navbar navbar-default">
+    <!-- <div class="container-fluid"> -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Report! 🐼</a>
+      </div>
+  
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+        <ul class="nav navbar-nav">
+          <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li> -->
+          <li><a href="/">Home</a></li>
+          <li><a href="/dblist">DBList</a></li>
+          <li><a href="/">Back</a></li>
+        </ul>
+      </div>
+    <!-- </div> -->
+  </nav>
+
+  <div class="well bs-component">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
 
 
@@ -21,7 +53,7 @@
       <input type="text" class="form-control" name="url" id="url">
       <label for="tool">Tool</label>
       <span> Security Tool</span>
-      <select name="fname_tool" class="result7"  id="class_tool" >
+      <select name="fname_tool" class="result7"  id="class_tool" style=" width:55px;">
         <option value="SAST">SAST</option>
         <option value="DAST">DAST</option>
         <option value="SCA">SCA</option>
@@ -36,6 +68,7 @@
       <input type="text" class="form-highvuln" name="high" id="highvuln">
       <label for="medhvuln">Medium</label>
       <input type="text" class="form-mediumvuln" name="med" id="medhvuln">
+
       <button type = "button"  class="result4" onClick="window.open('/upload_photo/0', '', 'width=300,height=300')">Upload</button>
       <br><br>
 
@@ -45,19 +78,17 @@
         <div id="employee_tbl">
          
               <span class="input-group-addon"> Choose a Vulnerability:</span>
-         
               <select name="comp_select" class="selectpicker form-control"  id="all_classes">
                 <option hidden selected>Click vuln</option>
               {% for c in vulnList %}
               <option value="{{ c.id }}">{{ c.vulnerability }}</option>
               {% endfor %}
             </select>
-            
-             <input type="text" id="all_entries" name="fname_detail"  class="result" value="{{vulnItem}}">
-             <input type="text" id="all_entries2" name="fname_remediation"  class="result2" value="{{vulnItem}}">
-             <input type="hidden" id="all_entries3" name="fname_vuln" class="result3" value="{{vulnItem}}">
-             <input type="hidden" id="all_entries4" name="fname_reference" class="result6" value="{{vulnItem}}">
-             <select name="fname_class" class="result5"  id="class_vuln" >
+             <input type="text" id="all_entries" name="fname_detail"  class="result" value="{{vulnItem}}" style=" width:250px;margin-left:7px;">
+             <input type="text" id="all_entries2" name="fname_remediation"  class="result2" value="{{vulnItem}}" style=" width:250px;margin-left:7px;">
+             <input type="hidden" id="all_entries3" name="fname_vuln" class="result3" value="{{vulnItem}}" style=" width:55px;margin-left:7px;">
+             <input type="hidden" id="all_entries4" name="fname_reference" class="result6" value="{{vulnItem}}" style=" width:150px;margin-left:7px;">
+             <select name="fname_class" class="result5"  id="class_vuln" style=" width:80px;margin-left:5px;">
               <option value="Critical">Critical</option>
               <option value="High">High</option>
               <option value="Medium">Medium</option>
@@ -65,7 +96,7 @@
             </select>
 
           
-             <input type="number" id="qtd" name="qtd" min="1" max="3000" placeholder="Set Vuln quantity" class="result8">
+             <input type="number" id="qtd" name="qtd" min="1" max="3000" placeholder="Set Vuln quantity" class="result8" style=" width:150px;margin-left:5px;">
              <!-- <button type = "button"  class="result4" onClick="window.location='/upload_photo/{{id}}'">Upload</button> -->
              <button type = "button"  class="result4" onClick="window.open('/upload_photo/1', '', 'width=300,height=300')">Upload</button>
 
@@ -83,7 +114,7 @@
       
       
     </form>
-    
+  </div>
      
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -157,18 +188,18 @@
                   {% endfor %}
                 </select>
                
-                <input type="text" id="all_entries${count}" name="fname_detail${count}"  class="result" value="{{vulnItem}}">
-                <input type="text" id="all_entries2${count}" name="fname_remediation${count}"  class="result2" value="{{vulnItem}}">
-                <input type="hidden" id="all_entries3${count}" name="fname_vuln${count}" class="result3" value="{{vulnItem}}">
-                <input type="hidden" id="all_entries4${count}" name="fname_reference${count}" class="result6" value="{{vulnItem}}">
-                <select name="fname_class${count}" id="class_vuln${count}" class="result5">
+                <input type="text" id="all_entries${count}" name="fname_detail${count}"  class="result" value="{{vulnItem}}" style=" width:250px;margin-left:7px;">
+                <input type="text" id="all_entries2${count}" name="fname_remediation${count}"  class="result2" value="{{vulnItem}}" style=" width:250px;margin-left:7px;">
+                <input type="hidden" id="all_entries3${count}" name="fname_vuln${count}" class="result3" value="{{vulnItem}}" style=" width:250px;margin-left:7px;">
+                <input type="hidden" id="all_entries4${count}" name="fname_reference${count}" class="result6" value="{{vulnItem}}" style=" width:250px;margin-left:7px;">
+                <select name="fname_class${count}" id="class_vuln${count}" class="result5" style=" width:80px;margin-left:5px;">
                   <option value="Critical">Critical</option>
                   <option value="High">High</option>
                   <option value="Medium">Medium</option>
                   <option value="Low">Low</option>
                 </select>
 
-                <input type="number" id="qtd${count}" name="qtd${count}" min="1" max="500" placeholder="Set Vuln quantity" class="result8">
+                <input type="number" id="qtd${count}" name="qtd${count}" min="1" max="500" placeholder="Set Vuln quantity" class="result8" style=" width:150px;margin-left:5px;">
                 <button type = "button" class="result4" onClick="window.open('/upload_photo/${x}', '', 'width=300,height=300')">Upload</button>
             
                 <i class="fas fa-minus-circle remove_button"></i>
@@ -302,3 +333,5 @@
     
   </body>
 </html>
+
+{% endblock %}

@@ -1,22 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 {% autoescape off %}
 <!doctype html>
 <html>
   <head>
     <title>Vulnerability</title>
+
+    <style>
+      #wrap { float: center; }
+     body {background: #f9f9f9 !important}
+    </style>
+
   </head>
   <body>
-    <h1>Vulnerability {{ vuln.vulnerability }}</h1>
 
-    <div>
-    <a href="/dblist">back</a>
-    </div>
+    <div id="wrap">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Vulnerability {{ vuln.vulnerability }}</a>
+          </div>
+      
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+              <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li> -->
+              <li><a href="/">Home</a></li>
+              <li><a href="/report">Report</a></li>
+              <li><a href="/dblist">Back</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     <br><br>
     
 
     <form method="POST" action="" enctype="multipart/form-data">
     
-
-      <div class="form-group row">
+      <div class="well bs-component">
+      <div class="form-horizontal">
+        <fieldset>
         <label for="vulnerability">Vulnerability</label>
         <input type="text" class="form-control" name="vulnerability" id="vulnerability" value="{{ vuln.vulnerability }}" rows="4" cols="50">
 
@@ -28,6 +58,8 @@
 
         <p><label for="price">Reference</label></p>
         <input type="text" class="form-control" name="reference" id="reference" value="{{ vuln.reference }}">
+      
+      </fieldset>
       </div>
 
       <br><br>
@@ -35,9 +67,10 @@
       
 
     </form>
-
+    </div>
 
 
   </body>
 </html>
 {% endautoescape %}
+{% endblock %}

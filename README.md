@@ -7,7 +7,7 @@
 - To build and change something in code ```docker-compose build```
 
 ----
-- Web App runs at port 8085
+- Web App runs at port 8090
 
 ```http://localhost:8090```
 

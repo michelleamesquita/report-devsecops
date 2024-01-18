@@ -1,16 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 {% autoescape off %}
 <!doctype html>
 <html>
   <head>
     <title>Report</title>
+
+    <style>
+      #wrap { float: left; }
+      .flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Optional: this makes the container fill the entire viewport height */
+  }
+  body {background: #f9f9f9 !important}
+  
+    </style>
   </head>
   <body>
-    <h1>Vulnerability DB</h1>
-    <a href="/" >back</a>
-
-      <table class="table">
+    <!-- <h1 class="lead">Vulnerability DB</h1> -->
+    <!-- <a href="/" >back</a> -->
+    <div id="wrap">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Vulnerability DB</a>
+        </div>
+    
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+          <ul class="nav navbar-nav">
+            <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li> -->
+            <li><a href="/">Home</a></li>
+            <li><a href="/report">Report</a></li>
+            <li><a href="/">Back</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="well bs-component">
+      <div class="flex-container">
+      <table class="table table-striped table-hover active " style="width: auto;">
         <thead>
-            <tr>
+            <tr class="info">
             <th scope="col">Id</th>
             <th scope="col">Vulnerability</th>
             <th scope="col">Detail</th>
@@ -23,7 +64,7 @@
         </thead>
         <tbody>
             {% for vuln in vulns %}
-                <tr>
+                <tr style="width: 50 px">
                     <td>{{ vuln.id }}</th>
                     <td>{{ vuln.vulnerability }}</td>
                     <td>{{ vuln.detail }}</td>
@@ -36,9 +77,14 @@
             {% endfor %}
         </tbody>
       </table>
-
+      </div>
+    </div>
+    </div>
+      
+   
 
 
   </body>
 </html>
 {% endautoescape %}
+{% endblock %}

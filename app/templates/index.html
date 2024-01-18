@@ -1,16 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 {% autoescape off %}
 <!doctype html>
 <html>
   <head>
     <title>Report</title>
+    <style>
+      body {background: #f9f9f9 !important}
+      .inner{
+      display: inline-block;}
+    </style>
+    
   </head>
   <body>
-    <h1>Report Generate 👾</h1>
+
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Report Generate 👾</a>
+          </div>
+      
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+              <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li> -->
+              <li><a href="/">Home</a></li>
+              <li><a href="/report">Report</a></li>
+              <li><a href="/dblist">DBList</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <div class="well bs-component">
     <form method="POST" action="/upload" enctype="multipart/form-data">
-      <label for="csv">Upload csv to send all vulns</label>
-      <p><input type="file" name="file"></p>
-      <p><input type="submit" value="Submit"></p>
+      <div><h4 for="csv" class="lead" >Upload csv to send all vulns or write them all!</h4></div>
+      <br>
+      <div ><input type="file" name="file"></div>
+      <div> <br> <input class="btn btn-info btn-sm" type="submit" value="Submit"></p></div>
     </form>
+    <br>
 
     <form method="POST" action="" enctype="multipart/form-data">
       <div class="form-group row">
@@ -29,13 +65,12 @@
       
       <button type="btnAdd" class="btn btn-primary">Submit</button>
       <a href="/" class="btn btn-primary">Cancel</a>
-      <div class="form-group db"></div>
-     <p> <a href="/dblist" >DB List</a>
-      <a href="/report" >Report</a></p>
-    </div>
-
-
+      
     </form>
+  </div>
+
+
   </body>
 </html>
 {% endautoescape %}
+{% endblock %}

@@ -5,3 +5,4 @@ Flask-Session
 pandas
 requests
 xlsxwriter
+bootstrap-flask

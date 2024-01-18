@@ -1,29 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
 {% autoescape off %}
+
 <!doctype html>
 <html>
   <head>
     <title>Report</title>
+    <style>
+      body {background: #f9f9f9 !important}
+      .inner{
+      display: inline-block;}
+    </style>
   </head>
   <body>
-    <h1>Upload Photo</h1>
+    <div class="container-fluid">
+    <h5>Upload Photo</h5>
+    <br>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
 
     <form method="POST" action="/upload_photo/{{id}}" enctype="multipart/form-data">
       <p><input type="file" name="file" id="file"></p>
-      <p><input type="submit" value="Submit"></p>
+      <p><input type="submit" value="Submit" class="btn btn-primary btn-sm" id="inner" style="margin-right:20px;">
+        <i class="fa fa-trash"  onclick="delete_file()" aria-hidden="true" id="inner"></i>
+      </p>
+      
 
     </form>
 
     <!-- <button type="button"    onclick="delete_file()">Delete</button> -->
-
-    <i class="fa fa-trash"  onclick="delete_file()" aria-hidden="true"></i>
-   
-   
    
     </hr>
 
 
-
+  </div>
   </body>
 </html>
 
@@ -67,3 +77,4 @@
 
 </script>
 {% endautoescape %}
+{% endblock %}

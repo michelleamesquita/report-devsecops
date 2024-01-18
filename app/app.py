@@ -4,6 +4,7 @@ import re
 from flask import Flask, request, redirect, url_for,render_template,jsonify,abort,send_from_directory,Response,send_file,escape
 import json
 from flask_mysqldb import MySQL
+from flask_bootstrap import Bootstrap
 import mysql.connector
 import os
 import pandas as pd
@@ -17,7 +18,9 @@ from io import BytesIO
 import xlsxwriter
 import glob
 
+
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 # Change this to your secret key (can be anything, it's for extra protection)
 app.secret_key = 'key'
@@ -645,7 +648,9 @@ def get_excel(my_dict):
     return send_file(output, attachment_filename= f"{name[0]}_{tool[0]}.xlsx", as_attachment=True)
 
 
- 
+@app.route('/home')
+def home():
+    return render_template('home.html')
 
       
 
